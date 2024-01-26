@@ -8,4 +8,9 @@
     <string name="username">Username</string>
     <string name="not_yet_registered_signup_now"><u>Not yet registered? SignUp Now</u></string>
     <string name="already_have_an_account_login_now"><u>Already have an account? Login Now</u></string>
+
+    <string name="report_danger">Report Danger</string>
+    <string name="danger_name">Danger Name</string>
+    <string name="report">Report</string>
+    <string name="comment">Comment</string>
 </resources>

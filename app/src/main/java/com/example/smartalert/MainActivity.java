@@ -102,15 +102,13 @@ public class MainActivity extends AppCompatActivity {
                             user = auth.getCurrentUser();
                             updateUser(user, username.getText().toString());
 
-                            reference
-                                    .push()
-                                    .setValue(
-                                            new User(
-                                                    user.getUid(),
-                                                    username.getText().toString(),
-                                                    email.getText().toString()
-                                            )
-                                    );
+                            reference.push().setValue(
+                                    new User(
+                                            user.getUid(),
+                                            username.getText().toString(),
+                                            email.getText().toString()
+                                    )
+                            );
 
                             checkIfThereIsUser();
                         }else {

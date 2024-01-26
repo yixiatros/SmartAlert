@@ -1,25 +1,19 @@
 package com.example.smartalert;
 
 public class Alert {
-
-    private int id;
     private String title;
     private String message;
     private TypesOfDanger typeOfDanger;
 
-    public Alert(int id, String title, String message, TypesOfDanger typeOfDanger) {
-        this.id = id;
+    private double longitude;
+    private double latitude;
+
+    public Alert(String title, String message, TypesOfDanger typeOfDanger, double longitude, double latitude) {
         this.title = title;
         this.message = message;
         this.typeOfDanger = typeOfDanger;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
     }
 
     public String getTitle() {
@@ -44,5 +38,21 @@ public class Alert {
 
     public void setTypeOfDanger(TypesOfDanger typeOfDanger) {
         this.typeOfDanger = typeOfDanger;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(int longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(int latitude) {
+        this.latitude = latitude;
     }
 }
