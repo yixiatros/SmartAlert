@@ -1,24 +1,22 @@
 package com.example.smartalert.users;
 
-public abstract class User {
+public class User {
 
-    private int uid;
+    private String uid;
     private String username;
     private String email;
-    private String password;
 
-    public User(int uid, String username, String email, String password) {
+    public User(String uid, String username, String email) {
         this.uid = uid;
         this.username = username;
         this.email = email;
-        this.password = password;
     }
 
-    public int getUid() {
+    public String getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(String uid) {
         this.uid = uid;
     }
 
@@ -36,13 +34,5 @@ public abstract class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
