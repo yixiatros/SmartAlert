@@ -3,7 +3,6 @@
     <string name="app_name">SmartAlert</string>
     <string name="login">Σύνδεση</string>
     <string name="sign_up">Εγγραφή</string>
-    <string name="email">E-mail</string>
     <string name="password">Κωδικός</string>
     <string name="username">Όνομα Χρήστη</string>
     <string name="not_yet_registered_signup_now"><u>Δεν έχετε εγγραφεί ακόμα; Εγγραφείτε τώρα</u></string>
@@ -11,4 +10,7 @@
     <string name="danger_name">Όνομα Κινδύνου</string>
     <string name="report_danger">Αναφορά Κινδύνου</string>
     <string name="report">Αναφορά</string>
+    <string name="comment">Σχόλιο</string>
+    <string name="settings">Ρυθμήσεις</string>
+    <string name="save_changes">Αποθήκευση Αλλαγών</string>
 </resources>

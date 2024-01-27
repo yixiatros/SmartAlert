@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">SmartAlert</string>
+    <string name="login">Ingresar</string>
+    <string name="sign_up">Registrar</string>
+    <string name="password">Contraseña</string>
+    <string name="username">Nombre De Usario</string>
+    <string name="not_yet_registered_signup_now"><u>¿Aún no estás registrado? Regístrate ahora</u></string>
+    <string name="already_have_an_account_login_now"><u>¿Ya tienes una cuenta? Iniciar sesión ahora</u></string>
+    <string name="report_danger">Reportar Riesgo</string>
+    <string name="danger_name">Nombre De Riesgo</string>
+    <string name="report">Reportar</string>
+    <string name="comment">Comentario</string>
+    <string name="settings">Ajustes</string>
+    <string name="save_changes">Guardar Cambios</string>
+</resources>

@@ -105,4 +105,9 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         longitude = location.getLatitude();
         latitude = location.getLatitude();
     }
+
+    public void onSettingsClick(View view) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+    }
 }
