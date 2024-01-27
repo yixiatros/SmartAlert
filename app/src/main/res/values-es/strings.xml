@@ -13,4 +13,10 @@
     <string name="comment">Comentario</string>
     <string name="settings">Ajustes</string>
     <string name="save_changes">Guardar Cambios</string>
+    <string name="flood">Inundación</string>
+    <string name="fire">Incendio</string>
+    <string name="earthquake">Terremoto</string>
+    <string name="hurricane">Huracán</string>
+    <string name="snowstorm">Nevada</string>
+    <string name="other">Otro</string>
 </resources>

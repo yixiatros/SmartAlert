@@ -15,22 +15,13 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Spinner;
-import android.widget.Toast;
 
-import com.example.smartalert.R;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -52,6 +43,8 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
         database = getInstance();
         reference = database.getReference().child("nonReviewedAlerts");
+
+        LocaleHelper.checkLocale(this);
 
         checkPermissions();
     }

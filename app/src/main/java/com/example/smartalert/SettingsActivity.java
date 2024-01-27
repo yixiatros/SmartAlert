@@ -50,26 +50,10 @@ public class SettingsActivity extends AppCompatActivity {
                 .putInt("key_lang", languages.getSelectedItemPosition())
                 .apply();
 
-        if (languages.getSelectedItemPosition() == 1)
-            setLocale("el");
-        else if (languages.getSelectedItemPosition() == 2)
-            setLocale("es");
-        else
-            setLocale("en");
-    }
-
-    public void setLocale(String lang) {
-        Locale myLocale = new Locale(lang);
-        Resources res = getResources();
-        DisplayMetrics dm = res.getDisplayMetrics();
-        Configuration conf = res.getConfiguration();
-        conf.locale = myLocale;
-        res.updateConfiguration(conf, dm);
-
+        LocaleHelper.checkLocale(this);
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(intent);
         finish();
     }
-
 }

@@ -13,4 +13,10 @@
     <string name="comment">Σχόλιο</string>
     <string name="settings">Ρυθμήσεις</string>
     <string name="save_changes">Αποθήκευση Αλλαγών</string>
+    <string name="flood">Πλημμύρα</string>
+    <string name="fire">Πυρκαγιά</string>
+    <string name="earthquake">Σεισμός</string>
+    <string name="hurricane">Τυφώνας</string>
+    <string name="snowstorm">Χιονοθύελλα</string>
+    <string name="other">Άλλο</string>
 </resources>
