@@ -19,4 +19,5 @@
     <string name="hurricane">Huracán</string>
     <string name="snowstorm">Nevada</string>
     <string name="other">Otro</string>
+    <string name="upload_image">Subir Una Imagen</string>
 </resources>

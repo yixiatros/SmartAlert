@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:orientation="vertical"
-            android:padding="24dp">
+            android:padding="24sp">
 
             <TextView
                 android:id="@+id/reportDangerTextView"
@@ -35,11 +35,11 @@
 
             <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="40dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                app:cardCornerRadius="18dp"
+                android:layout_height="50sp"
+                android:layout_marginTop="40sp"
+                android:layout_marginStart="10sp"
+                android:layout_marginEnd="10sp"
+                app:cardCornerRadius="18sp"
                 android:backgroundTint="@color/primary">
 
                 <Spinner
@@ -54,9 +54,9 @@
             <EditText
                 android:id="@+id/dangerNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_marginTop="20dp"
-                android:drawablePadding="8dp"
+                android:layout_height="50sp"
+                android:layout_marginTop="20sp"
+                android:drawablePadding="8sp"
                 android:hint="@string/danger_name"
                 android:padding="8dp"
                 android:textColor="@color/light_1"
@@ -74,9 +74,9 @@
                 android:maxLines="10"
                 android:layout_height="100dp"
                 android:layout_width="match_parent"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="20sp"
                 android:scrollbars="vertical"
-                android:drawablePadding="8dp"
+                android:drawablePadding="8sp"
                 android:hint="@string/comment"
                 android:padding="8dp"
                 android:textColor="@color/light_1"
@@ -84,6 +84,27 @@
                 android:backgroundTint="@color/background"
                 app:backgroundTint="@color/background"
                 android:textColorHighlight="@color/cardview_dark_background"/>
+
+            <ImageView
+                android:id="@+id/uploadImageImageView"
+                android:layout_width="0sp"
+                android:layout_height="0sp"
+                android:layout_marginStart="10sp"
+                android:layout_marginTop="20sp"
+                android:layout_marginEnd="10sp"
+                android:padding="8dp"
+                android:layout_gravity="center" />
+
+            <Button
+                android:id="@+id/uploadImageButton"
+                android:layout_width="match_parent"
+                android:layout_height="60sp"
+                android:layout_marginTop="10dp"
+                android:backgroundTint="#11FFFFFF"
+                android:drawableLeft="@drawable/ic_baseline_upload_primary"
+                android:text="@string/upload_image"
+                android:textColor="@color/light_1"
+                android:textSize="15sp"/>
 
             <Button
                 android:id="@+id/reportButton"

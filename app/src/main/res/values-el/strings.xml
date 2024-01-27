@@ -19,4 +19,5 @@
     <string name="hurricane">Τυφώνας</string>
     <string name="snowstorm">Χιονοθύελλα</string>
     <string name="other">Άλλο</string>
+    <string name="upload_image">Mεταφόρτωση Εικόνας</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.smartalert;
 import static com.google.firebase.database.FirebaseDatabase.getInstance;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -15,21 +16,30 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class HomeActivity extends AppCompatActivity implements LocationListener {
+
+    private final int GALLERY_REQ_CODE = 1000;
 
     FirebaseDatabase database;
     DatabaseReference reference;
     LocationManager locationManager;
+
+    private ImageView uploadImageImageView;
 
     private double latitude;
     private double longitude;
@@ -62,8 +72,15 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         final EditText comment = dialog.findViewById(R.id.commentEditText);
         final Spinner typeOfDanger = dialog.findViewById(R.id.typeOfDangerSpinner);
         final Button reportButton = dialog.findViewById(R.id.reportButton);
+        final Button uploadImageButton = dialog.findViewById(R.id.uploadImageButton);
+        uploadImageImageView = dialog.findViewById(R.id.uploadImageImageView);
 
-        typeOfDanger.setAdapter(new ArrayAdapter<TypesOfDanger>(this, R.layout.dropdown_item, TypesOfDanger.values()));
+        List<String> typesOfDanger = new ArrayList<>();
+        for (TypesOfDanger t : TypesOfDanger.values()) {
+            typesOfDanger.add(t.toString(getResources()));
+        }
+
+        typeOfDanger.setAdapter(new ArrayAdapter<String>(this, R.layout.dropdown_item, typesOfDanger));
 
         reportButton.setOnClickListener((v) -> {
             if (!checkPermissions())
@@ -80,6 +97,30 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
             );
             dialog.dismiss();
         });
+
+        uploadImageButton.setOnClickListener((v) -> {
+            Intent iGallery = new Intent(Intent.ACTION_PICK);
+            iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            startActivityForResult(iGallery, GALLERY_REQ_CODE);
+        });
+    }
+
+
+    // On select Image
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (resultCode == RESULT_OK) {
+            if (requestCode == GALLERY_REQ_CODE) {
+                if (data != null) {
+                    uploadImageImageView.getLayoutParams().height = 300;
+                    uploadImageImageView.getLayoutParams().width = 300;
+                    uploadImageImageView.setImageURI(data.getData());
+                    uploadImageImageView.requestLayout();
+                }
+            }
+        }
     }
 
     private boolean checkPermissions() {

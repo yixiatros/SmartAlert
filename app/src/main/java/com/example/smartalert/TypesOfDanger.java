@@ -1,24 +1,25 @@
 package com.example.smartalert;
 
+import android.content.res.Resources;
+
 import androidx.annotation.NonNull;
 
 public enum TypesOfDanger {
-    FLOOD(MyApplication.getAppContext().getResources().getString(R.string.flood)),
-    FIRE(MyApplication.getAppContext().getResources().getString(R.string.fire)),
-    EARTHQUAKE(MyApplication.getAppContext().getResources().getString(R.string.earthquake)),
-    HURRICANE(MyApplication.getAppContext().getResources().getString(R.string.hurricane)),
-    SNOWSTORM(MyApplication.getAppContext().getResources().getString(R.string.snowstorm)),
-    OTHER(MyApplication.getAppContext().getResources().getString(R.string.other));
+    FLOOD(R.string.flood),
+    FIRE(R.string.fire),
+    EARTHQUAKE(R.string.earthquake),
+    HURRICANE(R.string.hurricane),
+    SNOWSTORM(R.string.snowstorm),
+    OTHER(R.string.other);
 
-    private final String dangerName;
+    private final int dangerNameId;
 
-    TypesOfDanger(String dangerName){
-        this.dangerName = dangerName;
+    TypesOfDanger(int dangerNameId){
+        this.dangerNameId = dangerNameId;
     }
 
-    @NonNull
-    @Override public String toString(){
-        return dangerName;
+    public String toString(Resources res){
+        return res.getString(dangerNameId);
     }
 
 }
