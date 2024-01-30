@@ -1,20 +1,16 @@
 plugins {
-    id("com.android.application")
-    id("com.google.gms.google-services")
+    id("com.android.library")
 }
 
 android {
-    namespace = "com.example.smartalert"
+    namespace = "com.example.backend"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.smartalert"
         minSdk = 31
-        targetSdk = 34
-        versionCode = 1
-        versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles("consumer-rules.pro")
     }
 
     buildTypes {
@@ -36,11 +32,7 @@ dependencies {
 
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.11.0")
-    implementation("androidx.constraintlayout:constraintlayout:2.1.4")
-    implementation("com.google.firebase:firebase-auth:22.3.0")
     implementation("com.google.firebase:firebase-database:20.3.0")
-    implementation("com.firebaseui:firebase-ui-database:8.0.2")
-    implementation(project(":app:backend"))
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")

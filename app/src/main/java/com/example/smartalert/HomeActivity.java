@@ -17,6 +17,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -25,6 +26,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
+import com.example.backend.DangerReviewer;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -53,6 +55,9 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
         database = getInstance();
         reference = database.getReference().child("nonReviewedAlerts");
+
+        DangerReviewer dangerReviewer = new DangerReviewer();
+        dangerReviewer.start(this);
 
         LocaleHelper.checkLocale(this);
 
@@ -90,7 +95,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                     new Alert(
                             dangerName.getText().toString(),
                             comment.getText().toString(),
-                            TypesOfDanger.valueOf(typeOfDanger.getSelectedItem().toString().toUpperCase()),
+                            TypesOfDanger.values()[typeOfDanger.getSelectedItemPosition()],
                             longitude,
                             latitude
                     )
@@ -104,7 +109,6 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
             startActivityForResult(iGallery, GALLERY_REQ_CODE);
         });
     }
-
 
     // On select Image
     @Override

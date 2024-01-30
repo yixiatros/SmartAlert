@@ -15,3 +15,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "SmartAlert"
 include(":app")
+include(":app:backend")

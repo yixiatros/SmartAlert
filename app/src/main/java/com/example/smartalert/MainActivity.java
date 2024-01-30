@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
         database = getInstance();
         reference = database.getReference("users");
 
-        Log.d("AEK", "Main");
-
         LocaleHelper.checkLocale(this);
 
         changeLoginSignUp();
