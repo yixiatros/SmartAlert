@@ -30,6 +30,20 @@
                 android:onClick="onSettingsClick"
                 android:padding="15dp"
                 android:src="@drawable/ic_baseline_settings"
+                app:layout_constraintEnd_toStartOf="@id/logoutButton"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageButton
+                android:id="@+id/logoutButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
+                android:backgroundTint="#00000000"
+                android:contentDescription="@string/logout"
+                android:onClick="onLogoutClick"
+                android:padding="15dp"
+                android:src="@drawable/ic_baseline_logout"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

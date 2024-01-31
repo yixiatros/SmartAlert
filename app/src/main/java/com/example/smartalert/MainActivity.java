@@ -113,8 +113,9 @@ public class MainActivity extends AppCompatActivity {
                             reference.push().setValue(
                                     new User(
                                             user.getUid(),
-                                            username.getText().toString(),
-                                            email.getText().toString()
+                                            false,
+                                            email.getText().toString(),
+                                            username.getText().toString()
                                     )
                             );
 

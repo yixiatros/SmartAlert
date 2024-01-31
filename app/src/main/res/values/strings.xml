@@ -23,4 +23,8 @@
     <string name="snowstorm">Snowstorm</string>
     <string name="other">Other</string>
     <string name="upload_image">Upload Image</string>
+    <string name="image_uploaded_successfully">Image uploaded successfully!</string>
+    <string name="something_went_wrong">Something went wrong.</string>
+    <string name="successful_report">Successful Report!</string>
+    <string name="logout" translatable="false">logout</string>
 </resources>

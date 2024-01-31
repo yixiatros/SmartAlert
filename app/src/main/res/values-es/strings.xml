@@ -20,4 +20,7 @@
     <string name="snowstorm">Nevada</string>
     <string name="other">Otro</string>
     <string name="upload_image">Subir Una Imagen</string>
+    <string name="image_uploaded_successfully">Imagen subió correctamente!</string>
+    <string name="something_went_wrong">Hubía un error.</string>
+    <string name="successful_report">" ¡Informe exitoso!"</string>
 </resources>

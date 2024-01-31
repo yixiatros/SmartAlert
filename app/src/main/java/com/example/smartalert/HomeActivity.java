@@ -25,26 +25,45 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.backend.DangerReviewer;
+import com.example.smartalert.users.User;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.Console;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class HomeActivity extends AppCompatActivity implements LocationListener {
 
     private final int GALLERY_REQ_CODE = 1000;
 
     FirebaseDatabase database;
-    DatabaseReference reference;
+    DatabaseReference databaseReference;
+    FirebaseStorage storage;
+    StorageReference storageReference;
     LocationManager locationManager;
 
     private ImageView uploadImageImageView;
+    private Button reportEventButton;
 
     private double latitude;
     private double longitude;
+
+    private Intent imageData;
+
+    private boolean isCPO = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,10 +73,13 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         database = getInstance();
-        reference = database.getReference().child("nonReviewedAlerts");
+        databaseReference = database.getReference().child("nonReviewedAlerts");
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
 
-        DangerReviewer dangerReviewer = new DangerReviewer();
-        dangerReviewer.start(this);
+        reportEventButton = findViewById(R.id.reportEventButton);
+
+        checkIfCPO();
 
         LocaleHelper.checkLocale(this);
 
@@ -91,7 +113,9 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
             if (!checkPermissions())
                 return;
 
-            reference.push().setValue(
+            DatabaseReference keyReference = databaseReference.push();
+            String key = keyReference.getKey();
+            keyReference.setValue(
                     new Alert(
                             dangerName.getText().toString(),
                             comment.getText().toString(),
@@ -100,6 +124,21 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                             latitude
                     )
             );
+
+            keyReference.addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Toast.makeText(HomeActivity.this, R.string.successful_report, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                    Toast.makeText(HomeActivity.this, R.string.something_went_wrong, Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            uploadImage(key);
+
             dialog.dismiss();
         });
 
@@ -107,6 +146,21 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
             Intent iGallery = new Intent(Intent.ACTION_PICK);
             iGallery.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
             startActivityForResult(iGallery, GALLERY_REQ_CODE);
+        });
+    }
+
+    private void uploadImage(String key) {
+        if (imageData == null)
+            return;
+
+        UploadTask uploadTask = storageReference.child(key).putFile(Objects.requireNonNull(imageData.getData()));
+
+        uploadTask.addOnProgressListener(taskSnapshot -> {
+            double progress = (100.0 * taskSnapshot.getBytesTransferred()) / taskSnapshot.getTotalByteCount();
+        }).addOnSuccessListener(taskSnapshot -> {
+            Toast.makeText(this, R.string.image_uploaded_successfully, Toast.LENGTH_SHORT).show();
+        }).addOnFailureListener(exception  -> {
+             Toast.makeText(this, exception.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         });
     }
 
@@ -122,6 +176,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                     uploadImageImageView.getLayoutParams().width = 300;
                     uploadImageImageView.setImageURI(data.getData());
                     uploadImageImageView.requestLayout();
+                    imageData = data;
                 }
             }
         }
@@ -147,5 +202,44 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
     public void onSettingsClick(View view) {
         Intent intent = new Intent(this, SettingsActivity.class);
         startActivity(intent);
+    }
+
+    public void onLogoutClick(View view) {
+        FirebaseAuth.getInstance().signOut();
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
+    private void doIfCPO() {
+        if (isCPO){
+            reportEventButton.setText("Hello");
+            reportEventButton.setActivated(false);
+            reportEventButton.setVisibility(View.GONE);
+        }
+    }
+
+    private void checkIfCPO() {
+        Query query = database.getReference().child("users").orderByChild("uid").equalTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        query.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot item : snapshot.getChildren()) {
+                    for (DataSnapshot i : item.getChildren()){
+                        if (Objects.equals(i.getKey(), "cpo")){
+                            isCPO = Boolean.parseBoolean(i.getValue().toString());
+                            doIfCPO();
+                            break;
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 }
