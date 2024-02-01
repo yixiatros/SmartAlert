@@ -23,4 +23,6 @@
     <string name="image_uploaded_successfully">Επιτυχής μεταφόρτωση εικόνας!</string>
     <string name="something_went_wrong">Κάτι πήγε στραβά.</string>
     <string name="successful_report">Επιτυχής αναφορά!</string>
+    <string name="logout">Αποσύνδεση</string>
+    <string name="review_alerts">Ανασκόπηση Αναφορών</string>
 </resources>

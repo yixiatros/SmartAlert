@@ -36,6 +36,7 @@
         android:layout_marginTop="20dp"
         android:onClick="onSaveChangesClick"
         android:text="@string/save_changes"
+        android:textColor="@color/background"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/languagesCardView" />

@@ -26,5 +26,6 @@
     <string name="image_uploaded_successfully">Image uploaded successfully!</string>
     <string name="something_went_wrong">Something went wrong.</string>
     <string name="successful_report">Successful Report!</string>
-    <string name="logout" translatable="false">logout</string>
+    <string name="logout">Logout</string>
+    <string name="review_alerts">Review Alerts</string>
 </resources>

@@ -13,6 +13,9 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.smartalert.HomeActivity;
+import com.example.smartalert.LocaleHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;

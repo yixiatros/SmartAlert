@@ -92,7 +92,7 @@
                 android:backgroundTint="@color/primary"
                 android:onClick="onButtonClick"
                 android:text="@string/login"
-                android:textColor="@color/light_1"
+                android:textColor="@color/background"
                 android:textSize="18sp"
                 app:cornerRadius="20dp" />
         </LinearLayout>

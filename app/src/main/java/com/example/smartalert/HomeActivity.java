@@ -41,7 +41,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.Console;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -57,6 +59,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
     private ImageView uploadImageImageView;
     private Button reportEventButton;
+    private Button reviewAlertsButton;
 
     private double latitude;
     private double longitude;
@@ -78,6 +81,10 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         storageReference = storage.getReference();
 
         reportEventButton = findViewById(R.id.reportEventButton);
+        reviewAlertsButton = findViewById(R.id.reviewAlertsButton);
+
+        reviewAlertsButton.setActivated(false);
+        reviewAlertsButton.setVisibility(View.GONE);
 
         checkIfCPO();
 
@@ -212,12 +219,20 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         finish();
     }
 
+    public void onReviewAlerts(View view) {
+        Intent intent = new Intent(this, ReviewAlertsActivity.class);
+        startActivity(intent);
+    }
+
     private void doIfCPO() {
-        if (isCPO){
-            reportEventButton.setText("Hello");
-            reportEventButton.setActivated(false);
-            reportEventButton.setVisibility(View.GONE);
-        }
+        if (!isCPO)
+            return;
+
+        reportEventButton.setActivated(false);
+        reportEventButton.setVisibility(View.GONE);
+
+        reviewAlertsButton.setActivated(true);
+        reviewAlertsButton.setVisibility(View.VISIBLE);
     }
 
     private void checkIfCPO() {

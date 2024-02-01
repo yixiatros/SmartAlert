@@ -1,5 +1,10 @@
 package com.example.smartalert;
 
+import android.util.Log;
+
+import java.time.LocalDateTime;
+import java.util.Date;
+
 public class Alert {
     private String title;
     private String message;
@@ -8,12 +13,19 @@ public class Alert {
     private double longitude;
     private double latitude;
 
+    private long timeOfEvent;
+
+    public Alert() {
+    }
+
     public Alert(String title, String message, TypesOfDanger typeOfDanger, double longitude, double latitude) {
         this.title = title;
         this.message = message;
         this.typeOfDanger = typeOfDanger;
         this.longitude = longitude;
         this.latitude = latitude;
+
+        timeOfEvent = new Date().getTime();
     }
 
     public String getTitle() {
@@ -54,5 +66,13 @@ public class Alert {
 
     public void setLatitude(int latitude) {
         this.latitude = latitude;
+    }
+
+    public long getTimeOfEvent() {
+        return timeOfEvent;
+    }
+
+    public void setTimeOfEvent(long timeOfEvent) {
+        this.timeOfEvent = timeOfEvent;
     }
 }
