@@ -1,11 +1,14 @@
 package com.example.smartalert;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Pair;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.backend.DangerReviewer;
 import com.google.firebase.database.DataSnapshot;
@@ -13,14 +16,13 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
+import java.io.IOException;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
+import java.util.Locale;
 import java.util.TimeZone;
 
 public class ReviewAlertsActivity extends AppCompatActivity {
@@ -32,10 +34,14 @@ public class ReviewAlertsActivity extends AppCompatActivity {
     private List<String> typeOfDangerList = new ArrayList<>();
     private List<LocalDateTime> timeOfEventList = new ArrayList<>();
 
+    private RecyclerView ariaRecyclerView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_review_alerts);
+
+        ariaRecyclerView = findViewById(R.id.ariaRecyclerView);
 
         databaseReference = FirebaseDatabase.getInstance().getReference().child("nonReviewedAlerts");
 
@@ -58,9 +64,23 @@ public class ReviewAlertsActivity extends AppCompatActivity {
                 DangerReviewer dangerReviewer = new DangerReviewer();
                 List<List<Integer>> ariaGroupList = dangerReviewer.start(longitudeList, latitudeList, typeOfDangerList, timeOfEventList);
 
-                for (int i = 0; i < ariaGroupList.size(); i++) {
-                    Log.d("TempTest", "size of " + i + ": " + ariaGroupList.get(i).size() + " whole list: " + ariaGroupList.get(i));
+                ArrayList<AriaDanger> ariaDangerList = new ArrayList<>();
+                for (List<Integer> integerList : ariaGroupList) {
+                    try {
+                        Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
+                        List<Address> addresses = geocoder.getFromLocation(latitudeList.get(integerList.get(0)), longitudeList.get(integerList.get(0)), 1);
+
+                        if (addresses.size() > 0) {
+                            AriaDanger ariaDanger = new AriaDanger(addresses.get(0).getLocality(), typeOfDangerList.get(integerList.get(0)));
+                            ariaDangerList.add(ariaDanger);
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
+
+                ariaRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
+                ariaRecyclerView.setAdapter(new AriaRecyclerViewAdapter(getApplicationContext(), ariaDangerList));
             }
 
             @Override

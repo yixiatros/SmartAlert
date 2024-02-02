@@ -18,6 +18,9 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class DangerReviewer {
@@ -74,6 +77,13 @@ public class DangerReviewer {
                 ariaGroupList.add(newIntegerList);
             }
         }
+
+        Collections.sort(ariaGroupList, new Comparator<List<Integer>>() {
+            @Override
+            public int compare(List<Integer> t1, List<Integer> t2) {
+                return Integer.valueOf(t2.size()).compareTo(t1.size());
+            }
+        });
 
         return ariaGroupList;
     }

@@ -202,7 +202,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
     @Override
     public void onLocationChanged(@NonNull Location location) {
-        longitude = location.getLatitude();
+        longitude = location.getLongitude();
         latitude = location.getLatitude();
     }
 
