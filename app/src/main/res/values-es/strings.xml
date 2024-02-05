@@ -25,4 +25,8 @@
     <string name="successful_report">¡Informe exitoso!</string>
     <string name="logout">Cerrar sesión</string>
     <string name="review_alerts">Revisar Riesgos</string>
+    <string name="approve">Aprovar</string>
+    <string name="reject">Rechazar</string>
+    <string name="more">Mas</string>
+    <string name="fewer">Menos</string>
 </resources>

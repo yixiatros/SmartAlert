@@ -33,6 +33,9 @@ public class ReviewAlertsActivity extends AppCompatActivity {
     private List<Double> latitudeList = new ArrayList<>();
     private List<String> typeOfDangerList = new ArrayList<>();
     private List<LocalDateTime> timeOfEventList = new ArrayList<>();
+    private List<String> titleList = new ArrayList<>();
+    private List<String> commentList = new ArrayList<>();
+    private List<String> keyList = new ArrayList<>();
 
     private RecyclerView ariaRecyclerView;
 
@@ -59,12 +62,20 @@ public class ReviewAlertsActivity extends AppCompatActivity {
                     latitudeList.add(alert.getLatitude());
                     typeOfDangerList.add(alert.getTypeOfDanger().toString());
                     timeOfEventList.add(LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId()));
+
+                    titleList.add(alert.getTitle());
+                    commentList.add(alert.getMessage());
+
+                    keyList.add(item.getKey());
                 }
 
                 DangerReviewer dangerReviewer = new DangerReviewer();
                 List<List<Integer>> ariaGroupList = dangerReviewer.start(longitudeList, latitudeList, typeOfDangerList, timeOfEventList);
 
                 ArrayList<AriaDanger> ariaDangerList = new ArrayList<>();
+                ArrayList<ArrayList<AlertListItem>> alertListItemList = new ArrayList<>();
+
+                int conter = 0;
                 for (List<Integer> integerList : ariaGroupList) {
                     try {
                         Geocoder geocoder = new Geocoder(getApplicationContext(), Locale.getDefault());
@@ -77,10 +88,24 @@ public class ReviewAlertsActivity extends AppCompatActivity {
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
+
+                    ArrayList<AlertListItem> alertList = new ArrayList<>();
+                    for (Integer integer : integerList) {
+                        AlertListItem alertListItem = new AlertListItem(
+                                titleList.get(integer),
+                                commentList.get(integer),
+                                conter,
+                                keyList.get(integer)
+                        );
+                        alertList.add(alertListItem);
+                    }
+                    alertListItemList.add(alertList);
+
+                    conter++;
                 }
 
                 ariaRecyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                ariaRecyclerView.setAdapter(new AriaRecyclerViewAdapter(getApplicationContext(), ariaDangerList));
+                ariaRecyclerView.setAdapter(new AriaRecyclerViewAdapter(getApplicationContext(), ariaDangerList, alertListItemList));
             }
 
             @Override

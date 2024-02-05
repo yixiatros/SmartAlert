@@ -25,4 +25,8 @@
     <string name="successful_report">Επιτυχής αναφορά!</string>
     <string name="logout">Αποσύνδεση</string>
     <string name="review_alerts">Ανασκόπηση Αναφορών</string>
+    <string name="approve">Επικύρωση</string>
+    <string name="reject">Απόρριψη</string>
+    <string name="more">Περρισσότερα</string>
+    <string name="fewer">Λιγότερα</string>
 </resources>
