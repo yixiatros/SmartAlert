@@ -48,7 +48,6 @@ public class AlertRecyclerViewAdapter extends RecyclerView.Adapter<AlertRecycler
                     public void onSuccess(Uri uri) {
                         Log.d("TempTest", "seccess");
                         Glide.with(context).load(uri).into(holder.image);
-                        //holder.image.setImageURI(uri);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

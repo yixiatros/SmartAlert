@@ -8,16 +8,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
@@ -25,11 +34,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.backend.DangerReviewer;
 import com.example.smartalert.users.User;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -40,12 +51,17 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.io.Console;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
+import java.util.TimeZone;
 
 public class HomeActivity extends AppCompatActivity implements LocationListener {
 
@@ -67,6 +83,10 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
     private Intent imageData;
 
     private boolean isCPO = false;
+
+    private String provider;
+
+    private float MAX_DISTANCE = 70000;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +115,8 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
     public void onReportEvent(View view) {
         final Dialog dialog = new Dialog(this);
+
+        imageData = null;
 
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setCancelable(true);
@@ -171,6 +193,206 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
         });
     }
 
+    private void showAlert() {
+        if (isCPO)
+            return;
+
+        List<Alert> alertList = new ArrayList<>();
+
+        DatabaseReference reference = database.getReference().child("ReviewedAlerts");
+
+        reference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Alert alert = snapshot.getValue(Alert.class);
+
+                if (alert == null)
+                    return;
+
+                alertList.add(alert);
+                float[] distance = new float[1];
+                Location.distanceBetween(
+                        alert.getLatitude(),
+                        alert.getLongitude(),
+                        latitude,
+                        longitude,
+                        distance
+                );
+
+                if (distance[0] > MAX_DISTANCE)
+                    return;
+
+                LocalDateTime timeOfEvent = LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId());
+                if (timeOfEvent.isBefore(LocalDateTime.now().minusDays(2)))
+                    return;
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
+                View dialogView = inflater.inflate(R.layout.alert_box, null);
+                builder.setView(dialogView);
+
+                // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                builder.setCancelable(true);
+
+                final TextView dangerTypeTextView = dialogView.findViewById(R.id.dangerTypeTextView);
+                final TextView latitudeTextView = dialogView.findViewById(R.id.latitudeTextView);
+                final TextView longitudeTextView = dialogView.findViewById(R.id.longitudeTextView);
+                final TextView timeStampTextView = dialogView.findViewById(R.id.timeStampTextView);
+                final TextView instructionsTexView = dialogView.findViewById(R.id.instructionsTextView);
+                Button okButton = dialogView.findViewById(R.id.okButton);
+
+                dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
+                latitudeTextView.setText(Double.toString(alert.getLatitude()));
+                longitudeTextView.setText(Double.toString(alert.getLongitude()));
+                timeStampTextView.setText(timeOfEvent.toString());
+                instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+
+                okButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        alertDialog.dismiss();
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        /*reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot item : snapshot.getChildren()){
+                    Alert alert = item.getValue(Alert.class);
+
+                    if (alert == null)
+                        continue;
+
+                    alertList.add(alert);
+                    *//*float[] distance = new float[1];
+                    Location.distanceBetween(
+                            alert.getLatitude(),
+                            alert.getLongitude(),
+                            latitude,
+                            longitude,
+                            distance
+                    );
+
+                    if (distance[0] > MAX_DISTANCE)
+                        continue;
+
+                    LocalDateTime timeOfEvent = LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId());
+                    if (timeOfEvent.isBefore(LocalDateTime.now().minusDays(2)))
+                        continue;
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                    LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
+                    View dialogView = inflater.inflate(R.layout.alert_box, null);
+                    builder.setView(dialogView);
+
+                    // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+                    builder.setCancelable(false);
+
+                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
+
+                    final TextView dangerTypeTextView = dialogView.findViewById(R.id.dangerTypeTextView);
+                    final TextView latitudeTextView = dialogView.findViewById(R.id.latitudeTextView);
+                    final TextView longitudeTextView = dialogView.findViewById(R.id.longitudeTextView);
+                    final TextView timeStampTextView = dialogView.findViewById(R.id.timeStampTextView);
+                    final TextView instructionsTexView = dialogView.findViewById(R.id.instructionsTextView);
+                    *//**//*Button okButton = dialogView.findViewById(R.id.okButton);*//**//*
+
+                    dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
+                    latitudeTextView.setText(Double.toString(alert.getLatitude()));
+                    longitudeTextView.setText(Double.toString(alert.getLongitude()));
+                    timeStampTextView.setText(timeOfEvent.toString());
+                    instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
+
+                    AlertDialog alertDialog = builder.create();
+                    alertDialog.show();*//*
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+*/
+        /*Alert alert = alertList.get(alertList.size() - 1);
+        float[] distance = new float[1];
+        Location.distanceBetween(
+                alert.getLatitude(),
+                alert.getLongitude(),
+                latitude,
+                longitude,
+                distance
+        );
+
+        if (distance[0] > MAX_DISTANCE)
+            return;
+
+        LocalDateTime timeOfEvent = LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId());
+        if (timeOfEvent.isBefore(LocalDateTime.now().minusDays(2)))
+            return;
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+        LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
+        View dialogView = inflater.inflate(R.layout.alert_box, null);
+        builder.setView(dialogView);
+
+        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
+        builder.setCancelable(false);
+
+        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                finish();
+            }
+        });
+
+        final TextView dangerTypeTextView = dialogView.findViewById(R.id.dangerTypeTextView);
+        final TextView latitudeTextView = dialogView.findViewById(R.id.latitudeTextView);
+        final TextView longitudeTextView = dialogView.findViewById(R.id.longitudeTextView);
+        final TextView timeStampTextView = dialogView.findViewById(R.id.timeStampTextView);
+        final TextView instructionsTexView = dialogView.findViewById(R.id.instructionsTextView);
+        *//*Button okButton = dialogView.findViewById(R.id.okButton);*//*
+
+        dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
+        latitudeTextView.setText(Double.toString(alert.getLatitude()));
+        longitudeTextView.setText(Double.toString(alert.getLongitude()));
+        timeStampTextView.setText(timeOfEvent.toString());
+        instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();*/
+    }
+
     // On select Image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -195,6 +417,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
             ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION},123);
             return false;
         }
+
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
         return true;
@@ -249,6 +472,8 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                         }
                     }
                 }
+
+                showAlert();
             }
 
             @Override

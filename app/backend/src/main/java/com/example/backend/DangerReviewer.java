@@ -36,6 +36,9 @@ public class DangerReviewer {
             List<LocalDateTime> timeOfEventList
     ) {
 
+        if (longitudeList.size() == 0)
+            return ariaGroupList;
+
         ariaGroupList.add(new ArrayList<Integer>());
         ariaGroupList.get(0).add(0);
 
