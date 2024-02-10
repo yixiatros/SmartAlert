@@ -33,4 +33,10 @@
     <string name="more">More</string>
     <string name="fewer">Fewer</string>
     <string name="statistics">Statistics</string>
+    <string name="longitude">longitude:</string>
+    <string name="latitude">latitude:</string>
+    <string name="time">time:</string>
+    <string name="instructions">Instructions</string>
+    <string name="ok" translatable="false">OK</string>
+    <string name="total_alerts">Total alerts:</string>
 </resources>

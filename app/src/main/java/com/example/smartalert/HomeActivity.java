@@ -56,6 +56,7 @@ import org.w3c.dom.Text;
 import java.io.Console;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -244,7 +245,8 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                 dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
                 latitudeTextView.setText(Double.toString(alert.getLatitude()));
                 longitudeTextView.setText(Double.toString(alert.getLongitude()));
-                timeStampTextView.setText(timeOfEvent.toString());
+                final DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+                timeStampTextView.setText(timeOfEvent.format(CUSTOM_FORMATTER));
                 instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
 
                 AlertDialog alertDialog = builder.create();
@@ -278,119 +280,6 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
             }
         });
-
-        /*reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot item : snapshot.getChildren()){
-                    Alert alert = item.getValue(Alert.class);
-
-                    if (alert == null)
-                        continue;
-
-                    alertList.add(alert);
-                    *//*float[] distance = new float[1];
-                    Location.distanceBetween(
-                            alert.getLatitude(),
-                            alert.getLongitude(),
-                            latitude,
-                            longitude,
-                            distance
-                    );
-
-                    if (distance[0] > MAX_DISTANCE)
-                        continue;
-
-                    LocalDateTime timeOfEvent = LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId());
-                    if (timeOfEvent.isBefore(LocalDateTime.now().minusDays(2)))
-                        continue;
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
-                    View dialogView = inflater.inflate(R.layout.alert_box, null);
-                    builder.setView(dialogView);
-
-                    // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-                    builder.setCancelable(false);
-
-                    builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
-
-                    final TextView dangerTypeTextView = dialogView.findViewById(R.id.dangerTypeTextView);
-                    final TextView latitudeTextView = dialogView.findViewById(R.id.latitudeTextView);
-                    final TextView longitudeTextView = dialogView.findViewById(R.id.longitudeTextView);
-                    final TextView timeStampTextView = dialogView.findViewById(R.id.timeStampTextView);
-                    final TextView instructionsTexView = dialogView.findViewById(R.id.instructionsTextView);
-                    *//**//*Button okButton = dialogView.findViewById(R.id.okButton);*//**//*
-
-                    dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
-                    latitudeTextView.setText(Double.toString(alert.getLatitude()));
-                    longitudeTextView.setText(Double.toString(alert.getLongitude()));
-                    timeStampTextView.setText(timeOfEvent.toString());
-                    instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
-
-                    AlertDialog alertDialog = builder.create();
-                    alertDialog.show();*//*
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-*/
-        /*Alert alert = alertList.get(alertList.size() - 1);
-        float[] distance = new float[1];
-        Location.distanceBetween(
-                alert.getLatitude(),
-                alert.getLongitude(),
-                latitude,
-                longitude,
-                distance
-        );
-
-        if (distance[0] > MAX_DISTANCE)
-            return;
-
-        LocalDateTime timeOfEvent = LocalDateTime.ofInstant(Instant.ofEpochMilli(alert.getTimeOfEvent()), TimeZone.getDefault().toZoneId());
-        if (timeOfEvent.isBefore(LocalDateTime.now().minusDays(2)))
-            return;
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-        LayoutInflater inflater = LayoutInflater.from(HomeActivity.this);
-        View dialogView = inflater.inflate(R.layout.alert_box, null);
-        builder.setView(dialogView);
-
-        // Set Cancelable false for when the user clicks on the outside the Dialog Box then it will remain show
-        builder.setCancelable(false);
-
-        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                finish();
-            }
-        });
-
-        final TextView dangerTypeTextView = dialogView.findViewById(R.id.dangerTypeTextView);
-        final TextView latitudeTextView = dialogView.findViewById(R.id.latitudeTextView);
-        final TextView longitudeTextView = dialogView.findViewById(R.id.longitudeTextView);
-        final TextView timeStampTextView = dialogView.findViewById(R.id.timeStampTextView);
-        final TextView instructionsTexView = dialogView.findViewById(R.id.instructionsTextView);
-        *//*Button okButton = dialogView.findViewById(R.id.okButton);*//*
-
-        dangerTypeTextView.setText(alert.getTypeOfDanger().toString());
-        latitudeTextView.setText(Double.toString(alert.getLatitude()));
-        longitudeTextView.setText(Double.toString(alert.getLongitude()));
-        timeStampTextView.setText(timeOfEvent.toString());
-        instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
-
-        AlertDialog alertDialog = builder.create();
-        alertDialog.show();*/
     }
 
     // On select Image
@@ -444,6 +333,11 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
 
     public void onReviewAlerts(View view) {
         Intent intent = new Intent(this, ReviewAlertsActivity.class);
+        startActivity(intent);
+    }
+
+    public void onStatisticsClick(View view) {
+        Intent intent = new Intent(this, StatisticsActivity.class);
         startActivity(intent);
     }
 

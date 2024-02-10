@@ -30,4 +30,9 @@
     <string name="more">Mas</string>
     <string name="fewer">Menos</string>
     <string name="statistics">Estadísticas</string>
+    <string name="longitude">longitud:</string>
+    <string name="latitude">latitud:</string>
+    <string name="time">tiempo:</string>
+    <string name="instructions">Instrucciónes</string>
+    <string name="total_alerts">Alertas totales:</string>
 </resources>

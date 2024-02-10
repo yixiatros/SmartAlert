@@ -81,7 +81,7 @@
         android:id="@+id/statisticsButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:onClick="onReviewAlerts"
+        android:onClick="onStatisticsClick"
         android:text="@string/statistics"
         android:textColor="@color/background"
         android:textSize="30sp"

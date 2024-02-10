@@ -30,4 +30,9 @@
     <string name="more">Περρισσότερα</string>
     <string name="fewer">Λιγότερα</string>
     <string name="statistics">Στατιστικά</string>
+    <string name="longitude">γεωγραφικό μήκος:</string>
+    <string name="latitude">γεωγραφικό πλάτος:</string>
+    <string name="time">ώρα:</string>
+    <string name="instructions">Οδηγίες</string>
+    <string name="total_alerts">Σύνολο ειδοποιήσεων:</string>
 </resources>
