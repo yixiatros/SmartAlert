@@ -247,7 +247,7 @@ public class HomeActivity extends AppCompatActivity implements LocationListener 
                 longitudeTextView.setText(Double.toString(alert.getLongitude()));
                 final DateTimeFormatter CUSTOM_FORMATTER = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
                 timeStampTextView.setText(timeOfEvent.format(CUSTOM_FORMATTER));
-                instructionsTexView.setText("Aaaaaaaa aaaaaaaaaaaaa aaaaaaaaaaaaaa aaaaaaa aaaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaaaaaaaaaa aaaaaaaaaa aaaaaaaa");
+                instructionsTexView.setText(R.string.danger_info);
 
                 AlertDialog alertDialog = builder.create();
                 alertDialog.show();

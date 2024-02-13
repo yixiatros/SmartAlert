@@ -39,4 +39,6 @@
     <string name="instructions">Instructions</string>
     <string name="ok" translatable="false">OK</string>
     <string name="total_alerts">Total alerts:</string>
+
+    <string name="danger_info">Stay tuned for announcements and adhere to guidance provided by officials. Assemble a basic emergency supply kit. Familiarize yourself with evacuation paths and meeting spots. Follow directives for evacuation if mandated, utilizing specified routes and shelters.</string>
 </resources>

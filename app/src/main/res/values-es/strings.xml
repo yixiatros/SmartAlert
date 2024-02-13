@@ -35,4 +35,5 @@
     <string name="time">tiempo:</string>
     <string name="instructions">Instrucciónes</string>
     <string name="total_alerts">Alertas totales:</string>
+    <string name="danger_info">Manténgase atento a los anuncios y siga las instrucciones proporcionadas por los funcionarios. Reúna un kit básico de suministros de emergencia. Familiarícese con las rutas de evacuación y los puntos de encuentro. Siga las directivas de evacuación si es obligatorio, utilizando rutas y refugios específicos.</string>
 </resources>
